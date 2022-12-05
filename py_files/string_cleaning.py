@@ -140,7 +140,7 @@ def clean_chords(chords_column):
 
         # Delete 'chords' and 'chorus'
         for idx, chord in enumerate(raw_chords):
-            if 'chor' in chord.lower():
+            if 'chor' in chord.lower() or 'bass' in chord.lower():
                 del raw_chords[idx]
 
         # remove symbols
