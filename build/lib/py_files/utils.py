@@ -8,12 +8,14 @@ import matplotlib.pyplot as plt
 Get DATA
 '''
 def get_csv_data(file_name):
-    data_path = os.path.join('~', 'final-project-data/data/raw', file_name)
+    root_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    data_path = os.path.join(root_path, 'final-project-data/data/raw', file_name)
     raw_csv_df = pd.read_csv(data_path)
     return raw_csv_df
 
 def get_text_data(file_name):
-    data_path = os.path.join('~', 'final-project-data/data/raw', file_name)
+    root_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    data_path = os.path.join(root_path, 'final-project-data/data/raw', file_name)
     raw_txt_df = pd.read_csv(data_path, sep="_START_|_END_", header=None, engine='python').T
     return raw_txt_df
 
