@@ -3,27 +3,13 @@ import string
 import re
 from itertools import groupby
 
-'''
-DROP DUPLICATES BASED ON SONG & ARTIST TITLES
-DROP UNWANTED COLUMNS
-'''
-def drop_dups_cols(raw_df):
-
-    nonrepeated_songs_df = raw_df.drop_duplicates(
-                                subset=['artist_name', 'song_name'],
-                                keep = 'last').reset_index(drop = True)
-
-    slim_df = nonrepeated_songs_df.loc[:, ['artist_name', 'genres',
-                                           'chords', 'song_name']]
-    return slim_df
-
 
 '''
 REPLACE USEFUL SYMBOLS WITH STRINGS
 DELETE USELESS SYMBOLS (BREAK OR JUST DELETIONS)
 '''
-def dashes_commas(song):
-    # Fix dashes and commas
+def dashes_commas_colons(song):
+    # Fix dashes, colons, and commas
     for idx, chord in enumerate(song):
         if '--' in chord:
             song[idx] = chord.split('--')[0]
@@ -61,7 +47,7 @@ def slashes(song):
 def translations(song):
     # Translate uselful symbols to string
     useful_symbols = {'*': 'dim', '°': 'dim', 'º': 'dim', 'o': 'dim',
-                      '+': 'aug', '#': 'sharp'}
+                      '+': 'aug', '#': 'sharp', ':': ''}
 
     for idx, chord in enumerate(song):
         for sym in useful_symbols:
@@ -75,7 +61,7 @@ def punctuation(song):
 
     cleaned_song = song.copy()
 
-    cleaned_song = dashes_commas(cleaned_song)
+    cleaned_song = dashes_commas_colons(cleaned_song)
 
     cleaned_song = slashes(cleaned_song)
 
@@ -100,6 +86,8 @@ def merge_chords(song):
     # dictionary of correct formats (keys) and incorrect (values)
     chords_format = {'': ['add', 'major', 'maj', 'M', 'Major', 'Maj', '2', '4', '6'],
                      'm': ['minor', 'min'],
+                     'M7': ['major7', 'maj7', '7M', 'Major7', 'Maj7'],
+                     'min7': ['minor7', 'm7'],
                      '7': ['sus', '9', '11', '13'],
                      'aug': ['augmented'],
                      'dim': ['diminished'],
@@ -156,6 +144,7 @@ def clean_chords(chords_column):
 
     for row in column:
         # Convert string to list of strings
+        print(row)
         song_list = row.split()
 
         # Only chords that begin with designated letters

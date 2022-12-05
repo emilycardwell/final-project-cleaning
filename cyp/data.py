@@ -3,7 +3,7 @@ import matplotlib as mpl
 import requests
 import pandas as pd
 import re
-import itertools
+import os
 import string
 
 def read_txt_file(url):
@@ -38,20 +38,20 @@ def remove_symbols(list_of_list):
     return new_list
 
 def clean_chords(chords_column):
-    
+
     letters = list(string.ascii_uppercase)[:7]
     cleaned = []
-    
+
     for row in chords_column:
         # Convert string to list of strings
         song_list = row.split()
 
         # Only chords that begin with designated letters
         raw_chords = [chord for chord in song_list if chord[0] in letters]
-        
+
         # remove symbols
         unsymboled_chords = remove_symbols(raw_chords)
-        
+
         # Remove repeated chords
         non_repeating_chords = []
         for idx, chord in enumerate(unsymboled_chords):
@@ -61,9 +61,9 @@ def clean_chords(chords_column):
                 non_repeating_chords.append(chord)
             else:
                 pass
-        
+
         cleaned.append(non_repeating_chords)
-        
+
     return cleaned
 
 def save_csv(df, filename):

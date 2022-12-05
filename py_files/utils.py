@@ -5,6 +5,21 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 '''
+Get DATA
+'''
+def get_csv_data(file_name):
+    root_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    data_path = os.path.join(root_path, 'final-project-data/data/raw', file_name)
+    raw_csv_df = pd.read_csv(data_path)
+    return raw_csv_df
+
+def get_text_data(file_name):
+    root_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    data_path = os.path.join(root_path, 'final-project-data/data/raw', file_name)
+    raw_txt_df = pd.read_csv(data_path, sep="_START_|_END_", header=None, engine='python').T
+    return raw_txt_df
+
+'''
 GET CHORD COUNT & OPTIONAL DISTRIBUTION
 '''
 def count_chords(final_df, low_freq_to_remove=10, histplot=False, ascending=False):
