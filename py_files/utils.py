@@ -20,10 +20,12 @@ def get_text_data(file_name):
 '''
 GET CHORD COUNT & OPTIONAL DISTRIBUTION
 '''
-def count_chords(final_df, low_freq_to_remove=10, histplot=False, ascending=False):
+def count_chords(file_name, low_freq_to_remove=10, histplot=False, ascending=False):
+    data_path = os.path.join('~/code/emilycardwell/final-project-data/data/clean', file_name)
+    cleaned_csv_df = pd.read_csv(data_path)
 
     chords_count_dict = {}
-    for song in final_df['chords']:
+    for song in cleaned_csv_df['chords']:
         song_dict = dict(Counter(song))
         for chord, count in song_dict.items():
             if chord in chords_count_dict:
@@ -38,15 +40,16 @@ def count_chords(final_df, low_freq_to_remove=10, histplot=False, ascending=Fals
         else:
             slim_chord_counts_dict[chord] = count
 
+    chord_count_df = pd.Series(slim_chord_counts_dict).to_frame('chord_count')
+    chord_count_df.sort_values(by='chord_count', ascending=ascending, inplace=True)
+
     if histplot == True:
-        chords_fig = sns.histplot(slim_chord_counts_dict, bins=100)
-        chords_fig.set_xlabel('chord appearance')
+        print()
+        chords_fig = sns.barplot(chord_count_df)
+        chords_fig.set_xlabel('chord')
         plt.show()
     else:
         pass
-
-    chord_count_df = pd.Series(slim_chord_counts_dict).to_frame('chord_count')
-    chord_count_df.sort_values(by='chord_count', ascending=ascending, inplace=True)
 
     return chord_count_df
 
