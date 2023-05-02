@@ -1,8 +1,0 @@
-images
-.python-version
-final_project_cleaning.egg-info
-
-__pycache__
-*checkpoint.ipynb
-*.ipynb_checkpoints
-.DS_Store
